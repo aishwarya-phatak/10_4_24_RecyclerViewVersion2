@@ -1,5 +1,7 @@
 package in.bitcode.a10_4_24_recyclerviewversion2;
 
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,17 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             imgProduct = itemView.findViewById(R.id.imgProduct);
             txtTitle = itemView.findViewById(R.id.txtTitle);
             txtPrice = itemView.findViewById(R.id.txtPrice);
+
+            //way 3 --> attaching listener to imageView in ProductViewHolder constructor
+            imgProduct.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Product product1 = products.get(getAdapterPosition());
+                    Intent intent = new Intent(view.getContext(),ProductDetailsActivity.class);
+                    intent.putExtra("product",product1);
+                    view.getContext().startActivity(intent);
+                }
+            });
         }
     }
 
@@ -44,38 +57,69 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         //way 1 --> attach listener in onCreateViewHolder
         //by passing an object of anonymous class
-        imgProduct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "image is clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        imgProduct.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(view.getContext(), "image is clicked", Toast.LENGTH_LONG).show();
+//
+//            }
+//        });
 
-        txtTitle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "txtTitle is clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        txtTitle.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(view.getContext(), "txtTitle is clicked", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
-        txtPrice.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(view.getContext(), "txtPrice is clicked", Toast.LENGTH_SHORT).show();
-            }
-        });
+//        txtPrice.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Toast.makeText(view.getContext(), "txtPrice is clicked", Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         return new ProductViewHolder(productView);
     }
 
+    //way 2 --> attaching listener in onBindViewHolder method because we get position as an argument
     @Override
     public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
+
            Product product1 = products.get(position);
            txtTitle = holder.itemView.findViewById(R.id.txtTitle);
            txtTitle.setText(product1.getTxtTitle());
+//           txtTitle.setOnClickListener(new View.OnClickListener() {
+//               @Override
+//               public void onClick(View view) {
+//                   Intent intent = new Intent(view.getContext(),ProductDetailsActivity.class);
+//                   intent.putExtra("id",product1.getId());
+//                   intent.putExtra("title",product1.getTxtTitle());
+//                   intent.putExtra("image", product1.getImageId());
+//                   intent.putExtra("price",product1.getPrice());
+//                   view.getContext().startActivity(intent);
+//                   Toast.makeText(view.getContext(), "Title " + product1.getTxtTitle(), Toast.LENGTH_LONG).show();
+//               }
+//           });
 
            txtPrice = holder.itemView.findViewById(R.id.txtPrice);
            txtPrice.setText(product1.getPrice() + "");
+
+//           txtPrice.setOnClickListener(new View.OnClickListener() {
+//               @Override
+//               public void onClick(View view) {
+//                    Toast.makeText(view.getContext() ,"Price " +product1.getPrice(),Toast.LENGTH_LONG).show();
+//               }
+//           });
+
+           imgProduct = holder.itemView.findViewById(R.id.imgProduct);
+           imgProduct.setImageResource(R.drawable.ic_launcher_background);
+//           imgProduct.setOnClickListener(new View.OnClickListener() {
+//               @Override
+//               public void onClick(View view) {
+//                    Toast.makeText(view.getContext(), "Image " + product1.getImageId(), Toast.LENGTH_LONG).show();
+//               }
+//           });
     }
 
     @Override
